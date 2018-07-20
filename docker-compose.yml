@@ -1,0 +1,46 @@
+version: '3'
+services:
+  app_postgres:
+    container_name: risingstack_postgres
+    image: "mdillon/postgis"
+    ports:
+      - 64000:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=risingstack_bootcamp
+  app_redis:
+    container_name: risingstack_redis
+    image: redis:latest
+    ports:
+      - 64001:6379
+  app:
+    container_name: risingstack_node
+    build: .
+    volumes:
+      - ./.env:/app/.env
+      - ./index.js:/app/index.js
+      - ./package.json:/app/package.json
+      - ./api:/app/api
+      - ./public:/app/web
+      - ./build:/app/build
+    depends_on:
+      - app_postgres
+      - app_redis
+    links:
+      - app_postgres
+      - app_redis
+    ports:
+      - 64002:3000 # React Development Server
+      - 64003:3001 # Web API
+      - 64004:5858 # Debugging port for Web API
+      - 64005:3002 # Swagger Project Editor
+    environment:
+      DATABASE_URL: postgres://postgres:password@app_postgres:5432/risingstack_bootcamp
+      POSTGRES_LOGGING: "true" # Logs out every query that Postgres runs through Sequelize
+      RECREATE_SCHEMA: "true" # Nukes the database on every refresh
+      REDIS_URL: redis://app_redis:6379
+      AUTH_SAML_ENABLED: "false"
+      AUTH_SALESFORCE_ENABLED: "false"
+    command: ["node", "docker.js"]
+    restart: always

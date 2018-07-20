@@ -9,7 +9,11 @@ const app = new Koa()
 app.use(router.routes())
 
 app.on('error', (err) => {
-  logger.error('Server error', { error: err.message })
+  if (err) {
+    logger.error('Server error', { error: err.message })
+  } else {
+    logger.info('Koa server is up and running!')
+  }
 })
 
 module.exports = app

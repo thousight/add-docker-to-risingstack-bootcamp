@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
+    "start": "PROCESS_TYPE=web node .",
     "dev": "NODE_ENV=development nodemon .",
     "test-web": "NODE_ENV=test PROCESS_TYPE=web mocha 'web/test.setup.js' 'web/**/*.spec.js'",
     "test-worker": "NODE_ENV=test PROCESS_TYPE=worker mocha 'worker/test.setup.js' 'worker/**/*.spec.js'",
