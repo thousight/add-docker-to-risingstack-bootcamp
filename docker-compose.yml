@@ -19,11 +19,16 @@ services:
     build: .
     volumes:
       - ./.env:/app/.env
-      - ./index.js:/app/index.js
-      - ./package.json:/app/package.json
-      - ./api:/app/api
-      - ./public:/app/web
+      - ./models:/app/models
+      - ./public:/app/public
+      - ./scripts:/app/scripts
+      - ./worker:/app/worker
+      - ./web:/app/web
       - ./build:/app/build
+      - ./config.js:/app/config.js
+      - ./index.js:/app/index.js
+      - ./docker.js:/docker.js
+      - ./package.json:/app/package.json
     depends_on:
       - app_postgres
       - app_redis
@@ -36,10 +41,13 @@ services:
       - 64004:5858 # Debugging port for Web API
       - 64005:3002 # Swagger Project Editor
     environment:
-      DATABASE_URL: postgres://postgres:password@app_postgres:5432/risingstack_bootcamp
+      PG_URI: postgres://postgres:password@app_postgres:5432/risingstack_bootcamp
+      PG_USER: postgres
+      PG_PASSWORD: password
+      PG_DATABASE: risingstack_bootcamp
       POSTGRES_LOGGING: "true" # Logs out every query that Postgres runs through Sequelize
       RECREATE_SCHEMA: "true" # Nukes the database on every refresh
-      REDIS_URL: redis://app_redis:6379
+      REDIS_URI: redis://app_redis:6379
       AUTH_SAML_ENABLED: "false"
       AUTH_SALESFORCE_ENABLED: "false"
     command: ["node", "docker.js"]

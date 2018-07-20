@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "PROCESS_TYPE=web node .",
+    "start": "node .",
     "dev": "NODE_ENV=development nodemon .",
+    "dev:worker": "NODE_ENV=development PROCESS_TYPE=worker PORT=3001 nodemon .",
+    "dev:web": "NODE_ENV=development PROCESS_TYPE=web PORT=3000 nodemon .",
     "test-web": "NODE_ENV=test PROCESS_TYPE=web mocha 'web/test.setup.js' 'web/**/*.spec.js'",
     "test-worker": "NODE_ENV=test PROCESS_TYPE=worker mocha 'worker/test.setup.js' 'worker/**/*.spec.js'",
     "test-models": "NODE_ENV=test mocha 'models/test.setup.js' 'models/**/*.spec.js'",
@@ -52,7 +54,7 @@
     "eslint-plugin-import": "2.3.0",
     "mocha": "3.4.2",
     "nock": "9.0.13",
-    "nodemon": "1.11.0",
+    "nodemon": "^1.18.3",
     "super-request": "1.2.0"
   }
 }
